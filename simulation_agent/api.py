@@ -61,7 +61,7 @@ def run_simulation(data: SimulationInput):
         annual_contribution=annual_contribution,
         annual_spending=annual_spending,
         current_age=0,
-        retirement_age=data.years,
+        retirement_age=data.retirement_age,
         mean_return=data.market_mean_return,
         volatility=data.market_volatility,
         simulations=data.simulations
