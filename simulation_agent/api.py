@@ -28,3 +28,20 @@ def simulate(data: SimulationInput):
         data.simulations
     )
     return result
+    
+@app.post("/behavioral-event")
+def behavioral_event(data: SimulationInput, penalty: float):
+    result = run_dmc_simulation(
+        data.initial_corpus,
+        data.annual_contribution + penalty,
+        data.annual_spending,
+        data.current_age,
+        data.retirement_age,
+        data.mean_return,
+        data.volatility,
+        data.simulations
+    )
+    return {
+        "message": "Commitment fine applied",
+        "updated_result": result
+    }
