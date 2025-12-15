@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from simulation_agent.engine import run_dmc_simulation
+from pydantic import Field
 
 app = FastAPI(title="DMC-Sim: Dynamic Retirement Resilience Simulator")
 
@@ -9,14 +10,14 @@ app = FastAPI(title="DMC-Sim: Dynamic Retirement Resilience Simulator")
 # -------------------------------------------------
 
 class SimulationInput(BaseModel):
-    portfolio_amount: float
-    monthly_savings: float
-    withdrawal_rate: float
-    current_age: int
-    retirement_age: int
-    mean_return: float
-    volatility: float
-    simulations: int
+    portfolio_amount: float = Field(ge=0)
+    monthly_savings: float = Field(ge=0)
+    withdrawal_rate: float = Field(gt=0, lt=0.1)
+    current_age: int = Field(ge=18, le=60)
+    retirement_age: int = Field(gt=18, le=70)
+    mean_return: float = Field(gt=-0.2, lt=0.2)
+    volatility: float = Field(gt=0, lt=0.5)
+    simulations: int = Field(gt=100, le=5000)
 
 
 class BehavioralEventInput(SimulationInput):
