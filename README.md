@@ -1,73 +1,194 @@
-# Welcome to your Lovable project
+# DMC-Sim — Dynamic Retirement Resilience Simulator
 
-## Project info
+> **A behavior-aware Monte Carlo simulation engine for retirement planning**
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+DMC-Sim is a backend-first financial simulation system that evaluates long-term retirement resilience under uncertain market conditions **while explicitly modeling human behavior** (overspending, missed savings, penalties).
 
-## How can I edit this code?
+Unlike traditional retirement calculators that assume perfect discipline, DMC-Sim introduces **behavioral friction** and **commitment mechanisms** to reflect how people actually behave in real life.
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## 🚀 Core Idea
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+Most retirement tools answer:
 
-Changes made via Lovable will be committed automatically to this repo.
+> *“If everything goes right, will I be okay?”*
 
-**Use your preferred IDE**
+DMC-Sim instead asks:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+> *“How resilient is this plan when things go wrong?”*
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+The output is a **Retirement Safety / Resilience Score (RSC)** derived from thousands of Monte Carlo paths.
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🧠 Key Concepts
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 1. Monte Carlo Simulation
 
-# Step 3: Install the necessary dependencies.
-npm i
+* Simulates thousands of possible market futures
+* Each path models annual returns using:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+  * Expected mean return
+  * Volatility (risk)
+
+### 2. Sequence-of-Returns Risk
+
+* Captures the disproportionate damage caused by **early market crashes**
+* A major real-world retirement risk often ignored by static calculators
+
+### 3. Behavioral Finance Layer
+
+DMC-Sim models *human behavior*, not just math:
+
+* Overspending
+* Missed savings
+* Commitment penalties (loss aversion)
+
+This layer allows us to simulate how behavioral nudges can **increase long-term financial resilience**.
+
+---
+
+## 🧮 Inputs
+
+| Parameter          | Description                   |
+| ------------------ | ----------------------------- |
+| `portfolio_amount` | Current invested corpus       |
+| `monthly_savings`  | Monthly contribution          |
+| `withdrawal_rate`  | Annual withdrawal %           |
+| `current_age`      | User's current age            |
+| `retirement_age`   | Target retirement age         |
+| `mean_return`      | Expected annual market return |
+| `volatility`       | Market volatility             |
+| `simulations`      | Number of Monte Carlo runs    |
+
+---
+
+## 📤 Outputs
+
+### Retirement Safety / Resilience Score (RSC)
+
+* Scaled score representing robustness of retirement plan
+* Higher = more resilient to market + behavioral shocks
+
+### Success Probability
+
+* % of simulation paths where corpus survives until retirement
+
+---
+
+## 🔌 API Endpoints
+
+### 1️⃣ Run Base Simulation
+
+`POST /run_simulation`
+
+Simulates retirement outcome assuming standard behavior.
+
+**Purpose:**
+
+* Baseline retirement resilience
+
+---
+
+### 2️⃣ Behavioral Event Simulation
+
+`POST /behavioral-event`
+
+Applies a **commitment penalty** to model real-life corrective behavior.
+
+**Example:**
+
+* Overspending triggers a penalty
+* Penalty reduces current corpus
+* Same amount is redirected to future savings
+
+**Behavioral Insight:** Short-term pain → long-term discipline → improved resilience
+
+---
+
+## ⚠️ Real-Life Edge Cases Considered
+
+### 1. Early Career Market Crash
+
+* Severe impact due to sequence-of-returns risk
+* Monte Carlo volatility naturally captures this
+
+### 2. Job Loss / Zero Savings Periods
+
+* Monthly savings can drop to zero
+* Simulation continues and reflects vulnerability
+
+### 3. Repeated Overspending
+
+* Multiple behavioral penalties compound over time
+* Demonstrates loss aversion and habit correction
+
+### 4. Over-Optimistic Market Assumptions
+
+* High expected returns increase volatility exposure
+* RSC reflects hidden fragility
+
+### 5. Late Start to Retirement Planning
+
+* Reduced compounding window
+* Higher withdrawal pressure
+* Lower resilience score
+
+---
+
+## 🧪 Why Monte Carlo?
+
+| Traditional Calculator     | DMC-Sim                          |
+| -------------------------- | -------------------------------- |
+| Single deterministic path  | Thousands of probabilistic paths |
+| Assumes perfect discipline | Models behavioral failure        |
+| Optimistic outcomes        | Realistic risk exposure          |
+
+---
+
+## 🏗️ Architecture Overview
+
+```
+simulation_agent/
+│
+├── engine.py        # Monte Carlo simulation core
+├── api.py           # FastAPI interface
+└── models.py        # (optional) shared schemas
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🔮 Future Enhancements (Planned)
 
-**Use GitHub Codespaces**
+* Job-loss shock modeling
+* Inflation-adjusted spending
+* Dynamic asset allocation
+* Frontend dashboard (React)
+* Personal risk profiling
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## 🎯 Project Goal
 
-This project is built with:
+DMC-Sim is designed as:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+* A **research-backed academic project**
+* A **behavior-aware financial engineering system**
+* A foundation for future fintech tooling
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## 🧑‍💻 Team Notes
 
-## Can I connect a custom domain to my Lovable project?
+This backend is intentionally modular and extensible. Edge cases are explicitly documented to demonstrate engineering maturity without overfitting complexity prematurely.
 
-Yes, you can!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📌 Disclaimer
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project is for educational and simulation purposes only. It does not constitute financial advice.
+
+---
+
+**Built with:** FastAPI · Python · Monte Carlo Simulation · Behavioral Finance
