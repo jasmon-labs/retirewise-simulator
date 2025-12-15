@@ -1,7 +1,6 @@
 from simulation_agent.dmc_simulator import run_dmc_simulation
 from fastapi import FastAPI
 from pydantic import BaseModel
-from simulation_agent.engine import run_dmc_simulation
 
 app = FastAPI(title="DMC-Sim: Dynamic Retirement Resilience Simulator")
 
