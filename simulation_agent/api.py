@@ -45,3 +45,20 @@ def behavioral_event(data: SimulationInput, penalty: float):
         "message": "Commitment fine applied",
         "updated_result": result
     }
+@app.post("/run_simulation")
+def run_simulation(data: SimulationRequest):
+    annual_spending = data.portfolio_amount * data.withdrawal_rate
+    annual_contribution = data.monthly_savings * 12
+
+    result = run_dmc_simulation(
+        initial_corpus=data.portfolio_amount,
+        annual_contribution=annual_contribution,
+        annual_spending=annual_spending,
+        current_age=0,
+        retirement_age=data.years,
+        mean_return=data.market_mean_return,
+        volatility=data.market_volatility,
+        simulations=data.simulations
+    )
+
+    return result
