@@ -14,7 +14,9 @@ class SimulationInput(BaseModel):
     volatility: float
     simulations: int = 1000
 
-
+class BehavioralEventInput(SimulationInput):
+    penalty_amount: float
+    
 @app.post("/simulate")
 def simulate(data: SimulationInput):
     result = run_dmc_simulation(
@@ -30,10 +32,10 @@ def simulate(data: SimulationInput):
     return result
     
 @app.post("/behavioral-event")
-def behavioral_event(data: SimulationInput, penalty: float):
+def behavioral_event(data: BehavioralEventInput):
     result = run_dmc_simulation(
-        data.initial_corpus,
-        data.annual_contribution + penalty,
+        data.initial_corpus - data.penalty_amount,   # penalty reduces corpus
+        data.annual_contribution + data.penalty_amount,  # penalty boosts savings
         data.annual_spending,
         data.current_age,
         data.retirement_age,
@@ -41,10 +43,14 @@ def behavioral_event(data: SimulationInput, penalty: float):
         data.volatility,
         data.simulations
     )
+
     return {
         "message": "Commitment fine applied",
-        "updated_result": result
+        "penalty": data.penalty_amount,
+        "updated_rsc": result["retirement_safety_score"],
+        "full_result": result
     }
+    
 @app.post("/run_simulation")
 def run_simulation(data: SimulationInput):
     annual_spending = data.portfolio_amount * data.withdrawal_rate
