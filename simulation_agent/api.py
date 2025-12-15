@@ -46,7 +46,7 @@ def behavioral_event(data: SimulationInput, penalty: float):
         "updated_result": result
     }
 @app.post("/run_simulation")
-def run_simulation(data: SimulationRequest):
+def run_simulation(data: SimulationInput):
     annual_spending = data.portfolio_amount * data.withdrawal_rate
     annual_contribution = data.monthly_savings * 12
 
